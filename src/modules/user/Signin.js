@@ -1,9 +1,11 @@
-import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import {useNavigate} from 'react-router-dom';
 import { auth } from "../../firebase";
 
+
 let Signin = () => {
+
   let navigate = useNavigate();
   let [user, setUser] = useState({
     email: "",
@@ -23,32 +25,24 @@ let Signin = () => {
     event.preventDefault();
     let { email, password } = user;
     if ( email && password){
-       //authentication configuration start
-      // setSubmitButtonDisabled(true);
+       //login configuration start
        signInWithEmailAndPassword(auth, user.email, user.password)
-         .then( async(res) => {
-           //setSubmitButtonDisabled(false);
-           
-            await updateProfile(res.user , {
-            displayName:user.name
-           })
-           
-           if( res){
-             navigate('/');
-           }
+         .then( (res) => {
+          localStorage.setItem("isLoggedIn" , true);
+           navigate('/');
            setUser({
-             name: "",
-             email: "",
-             password: "",
-           })
+            email: "",
+            password: "",
+          })
            console.log(res);
          })
          .catch((err) => {
-           //setSubmitButtonDisabled(false);
            setErrorMessage(err.message);
+           localStorage.setItem("isLoggedIn" , false);
            console.log(err.message);
          });
-          //authentication configuration end
+
+          //login configuration end
  
 
     }else {
@@ -102,6 +96,11 @@ let Signin = () => {
                   required
                 />
               </div>
+              {errorMsg && (
+                <div className="text-center text-sm text-red-600">
+                  <span className="">{errorMsg}</span>
+                </div>
+              )}
               <div className="my-6 flex justify-between items-baseline">
                 <button
                   type="submit"

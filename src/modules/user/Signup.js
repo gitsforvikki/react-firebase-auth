@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import {useNavigate} from 'react-router-dom';
-import { createUserWithEmailAndPassword , updateProfile} from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebase";
 
 let Signup = () => {
-
   let navigate = useNavigate();
   let [user, setUser] = useState({
     name: "",
@@ -13,7 +12,7 @@ let Signup = () => {
   });
 
   let [errorMsg, setErrorMessage] = useState("");
-  let [submitButtonDisabled , setSubmitButtonDisabled] = useState(false);
+  let [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
   let updataUserstate = (event) => {
     setUser({
@@ -23,64 +22,63 @@ let Signup = () => {
     setErrorMessage("");
   };
 
-  let submitUserData =  (event) => {
+  let submitUserData = (event) => {
     event.preventDefault();
     let { name, email, password } = user;
-    if (name && email && password){
-       //authentication configuration start
-       setSubmitButtonDisabled(true);
-       createUserWithEmailAndPassword(auth, user.email, user.password)
-         .then( async(res) => {
-           setSubmitButtonDisabled(false);
-           
-            await updateProfile(res.user , {
-            displayName:user.name
-           })
-           if(res){
-            setErrorMessage("");
-     fetch(
-        "https://react-with-firebaseauth-default-rtdb.asia-southeast1.firebasedatabase.app/react-firebase.json",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name,
-            email,
-            password,
-          }),
-        }
-        
-      ).then((response)=>{
-        console.log("Response send to Firebase")
-      }).catch((err)=>{
-        console.log(err);
-      })
-           }
-           if( res){
-             navigate('/');
-           }
-           setUser({
-             name: "",
-             email: "",
-             password: "",
-           })
-           console.log(res);
-         })
-         .catch((err) => {
-           setSubmitButtonDisabled(false);
-           setErrorMessage(err.message);
-           console.log(err.message);
-         });
-          //authentication configuration end
- 
+    if (name && email && password) {
+      //authentication configuration start
+      setSubmitButtonDisabled(true);
+      createUserWithEmailAndPassword(auth, user.email, user.password)
+        .then( async (res) => {
+          setSubmitButtonDisabled(false);
+          localStorage.setItem('isLoggedIn' , false);
+          await updateProfile(res.user, {
+            displayName: user.name,
+          });
 
-    }else {
+          if (res) {
+            setErrorMessage("");
+            fetch(
+              "https://react-with-firebaseauth-default-rtdb.asia-southeast1.firebasedatabase.app/react-firebase.json",
+              {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  name,
+                  email,
+                  password,
+                }),
+              }
+            )
+              .then((response) => {
+                console.log("Response send to Firebase");
+              })
+              .catch((err) => {
+                console.log(err);
+              });
+          }
+          if (res) {
+            navigate("/");
+            setUser({
+              name: "",
+              email: "",
+              password: "",
+            });
+          }
+          
+          console.log(res);
+        })
+        .catch((err) => {
+          setSubmitButtonDisabled(false);
+          setErrorMessage(err.message);
+          console.log(err.message);
+        });
+      //authentication configuration end
+    } else {
       setErrorMessage("All fields required.");
     }
-    
-
   };
   return (
     <React.Fragment>

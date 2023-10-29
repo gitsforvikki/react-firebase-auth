@@ -9,11 +9,14 @@ import { auth } from "./firebase";
 let App = () => {
 
   let [userName , setUserName] = useState('');
+
   useEffect(()=>{
-    auth.onAuthStateChanged((user)=>{
-      {
-        user ? setUserName(user.displayName) : setUserName('')
-      }
+    auth.onAuthStateChanged( (user)=>{
+      setTimeout(()=>{
+        {
+           user ? setUserName(user.displayName) : setUserName('')
+        }
+      } , 2000)
       console.log(user);
     });
   } ,[]);

@@ -107,7 +107,7 @@ let Signin = () => {
                   onClick={submitUserData}
                   className="bg-indigo-500 px-4 py-2 text-white rounded hover:bg-indigo-600  hover:shadow-indigo-500 hover:shadow-4lg"
                 >
-                  Login
+                  Signin
                 </button>
                 <a href="#" className="text-sm hover:underline">
                   forgot password?

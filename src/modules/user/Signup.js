@@ -82,7 +82,6 @@ let Signup = () => {
   };
   return (
     <React.Fragment>
-      {/* <pre>{JSON.stringify(user)}</pre> */}
       <div className="h-screen bg-gray-100 flex flex-col justify-center items-center ">
         <div>
           <span className="text-2xl ">Create your account</span>
@@ -160,7 +159,7 @@ let Signup = () => {
                   disabled={submitButtonDisabled}
                   className=" bg-indigo-500 text-white px-3 py-2 rounded-md hover:bg-indigo-600 hover:shadow-indigo-500 hover:shadow-4lg"
                 >
-                  Submit
+                  Signup
                 </button>
                 <a href="#" className="text-sm hover:underline">
                   forgot password?

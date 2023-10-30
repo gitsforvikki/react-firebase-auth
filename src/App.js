@@ -10,6 +10,7 @@ let App = () => {
 
   let [userName , setUserName] = useState('');
 
+  // fill the user name from firebase response as soon as page loaded
   useEffect(()=>{
     auth.onAuthStateChanged( (user)=>{
       setTimeout(()=>{

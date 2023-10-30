@@ -1,19 +1,22 @@
 import { signInWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import { auth } from "../../firebase";
 
-
 let Signin = () => {
-
+  //for redirect page
   let navigate = useNavigate();
+
+  //location state to store user info from end user
   let [user, setUser] = useState({
     email: "",
     password: "",
   });
+
+  //for locally store error if any
   let [errorMsg, setErrorMessage] = useState("");
 
-
+  //event handller function
   let updataUserstate = (event) => {
     setUser({
       ...user,
@@ -21,34 +24,38 @@ let Signin = () => {
     });
   };
 
-  let submitUserData=(event)=>{
+  //event handller function for submit user data
+  let submitUserData = (event) => {
+    //prevent page refresh
     event.preventDefault();
+
+    //destructuring
     let { email, password } = user;
-    if ( email && password){
-       //login configuration start
-       signInWithEmailAndPassword(auth, user.email, user.password)
-         .then( (res) => {
-          localStorage.setItem("isLoggedIn" , true);
-           navigate('/');
-           setUser({
+
+    if (email && password) {
+      //login configuration start
+      signInWithEmailAndPassword(auth, user.email, user.password)
+        .then((res) => {
+          localStorage.setItem("isLoggedIn", true);
+          navigate("/");
+          setUser({
             email: "",
             password: "",
-          })
-           console.log(res);
-         })
-         .catch((err) => {
-           setErrorMessage(err.message);
-           localStorage.setItem("isLoggedIn" , false);
-           console.log(err.message);
-         });
+          });
+          console.log(res);
+        })
+        .catch((err) => {
+          setErrorMessage(err.message);
+          localStorage.setItem("isLoggedIn", false);
+          console.log(err.message);
+        });
 
-          //login configuration end
- 
-
-    }else {
+      //login configuration end
+    } else {
       setErrorMessage("All fields required.");
     }
-  }
+  };
+
   return (
     <React.Fragment>
       <div className="h-screen bg-gray-100 flex flex-col justify-center items-center">
@@ -56,7 +63,9 @@ let Signin = () => {
           <span className="text-2xl">Sign in your account</span>
           <div className="bg-indigo-400 h-2 mt-5 rounded-t-md"></div>
           <div className="shadow-md hover:shadow-2xl">
+            {/* form */}
             <form className="px-8 py-6 bg-white">
+              {/* email field */}
               <div className="mb-3">
                 <label
                   for="email"
@@ -77,6 +86,7 @@ let Signin = () => {
                 />
               </div>
 
+              {/* password field */}
               <div className="mb-3">
                 <label
                   for="Password"
@@ -96,11 +106,15 @@ let Signin = () => {
                   required
                 />
               </div>
+
+              {/* for show error if any  */}
               {errorMsg && (
                 <div className="text-center text-sm text-red-600">
                   <span className="">{errorMsg}</span>
                 </div>
               )}
+
+              {/* submit button */}
               <div className="my-6 flex justify-between items-baseline">
                 <button
                   type="submit"

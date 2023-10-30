@@ -16,7 +16,7 @@ let Home = (props) => {
             ) : (
               <div className="text-gray-600">
                 <p className="text-2xl lg:text-5xl">{`Hello ${props.userName}`}</p>
-                <p>Registration successful..!</p>
+               
               </div>
             )}
             <p className="display-4 text-3xl mt-4 lg:mt-6 sm:text-9xl text-gray-600 font-bold">

@@ -7,7 +7,7 @@ let Signin = () => {
   //for redirect page
   let navigate = useNavigate();
 
-  //location state to store user info from end user
+  //location state to store user info from users
   let [user, setUser] = useState({
     email: "",
     password: "",
